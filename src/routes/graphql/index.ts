@@ -4,7 +4,6 @@ import { GraphQLSchema, graphql, parse, validate } from 'graphql';
 import depthLimit from 'graphql-depth-limit';
 import { Mutations } from './mutations.js';
 import { Query } from './queries.js';
-import { getLoaders } from './loaders.js';
 
 export const schemaApp = new GraphQLSchema({
   query: Query,
