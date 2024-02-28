@@ -51,12 +51,8 @@ export const Mutations = new GraphQLObjectType({
       type: GraphQLBoolean,
       args: { id: { type: UUIDType } },
       resolve: async (_parent, { id }: User) => {
-        try {
-          await prismaApp.user.delete({ where: { id: id } });
-        } catch (err) {
-          return false;
-        }
-        return true;
+        await prismaApp.user.delete({ where: { id: id } });
+        return null;
       },
     },
 
