@@ -4,6 +4,7 @@ import { GraphQLSchema, graphql, parse, validate } from 'graphql';
 import depthLimit from 'graphql-depth-limit';
 import { Mutations } from './mutations.js';
 import { Query } from './queries.js';
+import { createLoaders } from './loader.js';
 
 export const schemaApp = new GraphQLSchema({
   query: Query,
@@ -11,6 +12,8 @@ export const schemaApp = new GraphQLSchema({
 });
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
+  const { prisma } = fastify;
+
   fastify.route({
     url: '/',
     method: 'POST',
@@ -32,6 +35,10 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
         schema: schemaApp,
         source: query,
         variableValues: variables,
+        contextValue: {
+          prisma,
+          loaders: createLoaders(prisma),
+        },
       });
 
       return { data, errors };
